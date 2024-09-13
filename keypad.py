@@ -2,7 +2,7 @@
 import PySimpleGUI as sg
 import logic
 
-def sg_keypad():
+def keypad():
     
     sg.theme('Dark')
 
@@ -65,4 +65,4 @@ def sg_keypad():
 
 if __name__ == '__main__':
     
-    sg_keypad()
+    keypad()
