@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import PySimpleGUI as sg
-import sg_keypad
+import keypad
 import logic
 
 def main():
@@ -60,15 +60,15 @@ def main():
             break
     
         elif event == 'Доходы (+)':
-            profit = logic.Profit(sg_keypad.sg_keypad()).profit
+            profit = logic.Profit(keypad.keypad()).profit
             window['Доходы (+)'].update(f'Доходы (+)\n{round(float(profit),2)} ₽')
             
         elif event == 'Расходы (-)':
-            debet = logic.Debet(sg_keypad.sg_keypad()).debet
+            debet = logic.Debet(keypad.keypad()).debet
             window['Расходы (-)'].update(f'Расходы (-)\n{round(float(debet),2)} ₽')
             
         elif event == 'Оплата суток':
-            sut = logic.Sut(sg_keypad.sg_keypad()).sut
+            sut = logic.Sut(keypad.keypad()).sut
             window['Оплата суток'].update(f'Оплата суток\n{round(float(sut),2)} ₽/ч.д.')
             
         result = logic.Result().result()
