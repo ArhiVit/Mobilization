@@ -43,6 +43,7 @@ class Sut:
         #result = self.profit - self.debet
         #return result
         
+error_s = '--> Неверный ввод!'
 
 def check(s):
     try:
@@ -54,5 +55,5 @@ def check(s):
             float(s)
             #s = s.lstrip('0')
         except:
-            s = '--> Неверный ввод!'
+            s = error_s
     return s
