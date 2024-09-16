@@ -7,7 +7,7 @@ def keypad():
     sg.theme('Dark')
 
     layout = [
-              [sg.Text('Введите число с клавиатуры')],
+              #[sg.Text('Введите число с клавиатуры')],
               [sg.Input('',
               size=(25, 1),
               readonly=True,
@@ -30,6 +30,8 @@ def keypad():
                        disable_close=False,#True,
                        default_button_element_size=(5, 2),
                        auto_size_buttons=False,
+                       element_justification='center',
+                       #no_titlebar=True,
                        modal = True,
                        finalize=True,
                        )
