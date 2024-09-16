@@ -3,14 +3,11 @@ import PySimpleGUI as sg
 import keypad
 import logic
 
+exec(open('config.txt').read())
 
 def main():
 
     sg.theme('Dark')
-
-    k_sut = 2.11
-    k_rent = 1.4
-    k_staffTravel = 1.4
 
     layout_V_E_S = sg.Button('Объем работ\n0.0 м2(шт, м.п.)', expand_x=True, s=(0, 2)), sg.Button('Выработка\n0.0 м2(шт, м.п.)/ч.д.', expand_x=True, s=(0, 2)), sg.Button('Персонал рабочих\n0 чел.', expand_x=True, s=(0, 2))
     layout_sut = sg.Frame('Суточные',

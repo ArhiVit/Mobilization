@@ -1,0 +1,3 @@
+k_sut = 2.11
+k_rent = 1.4
+k_staffTravel = 1.4
