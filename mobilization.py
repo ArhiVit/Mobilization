@@ -4,14 +4,14 @@ import keypad
 import logic
 
 exec(open('config.txt').read())
-
+default_sut = 123
 def main():
 
     sg.theme('Dark')
 
     layout_V_E_S = sg.Button('Объем работ\n0.0 м2(шт, м.п.)', expand_x=True, s=(0, 2), key='-V-'), sg.Button('Выработка\n0.0 м2(шт, м.п.)/ч.д.', expand_x=True, s=(0, 2), key='-E-'), sg.Button('Персонал рабочих\n0 чел.', expand_x=True, s=(0, 2), key='-S-')
     layout_sut = sg.Frame(f'Суточные ({k_sut})',
-                          [[sg.Button(f'Оплата чел. в сутки\n0.0 ₽/ч.д.', expand_x=True, s=(0, 2), key='-SUT-'),],
+                          [[sg.Button(f'Оплата чел. в сутки\n{default_sut} 0.0 ₽/ч.д.', expand_x=True, s=(0, 2), key='-SUT-'),],
                            [sg.Text('Всего: 0.0 ₽', expand_x=True,
                                     text_color='red', key='-T_SUT-')],
                            ],
@@ -27,7 +27,7 @@ def main():
                            expand_x=True,
                            )
     layout_staffTravel = sg.Frame(f'Проезд персонала - 1 поездка в 2 месяца ({k_staffTravel})',
-                                   [[sg.Button('Оплата чел. в 1 конец\n0.0 р/ч.д.', expand_x=True, s=(0, 2)), sg.Button('Кол-во поездок\n0.0 шт', expand_x=True, s=(0, 2)),],
+                                   [[sg.Button('Оплата чел. в 1 конец\n0.0 р', expand_x=True, s=(0, 2)), sg.Button('Кол-во поездок\n0.0 шт', expand_x=True, s=(0, 2)),],
                                     [sg.Text('Всего: 0.0 ₽', expand_x=True,
                                              text_color='red', key='-T_STAFFTRAVEL-')],
                                     ],
@@ -93,7 +93,7 @@ def main():
     # window.Maximize()
 
     while True:
-        event, values = window.read()
+        event, values = window() # window.read()
         if event in (sg.WIN_CLOSED, '\U00002716'):
             break
         elif event == '-SUT-':
