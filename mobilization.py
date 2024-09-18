@@ -97,10 +97,11 @@ def main():
         if event in (sg.WIN_CLOSED, '\U00002716'):
             break
         elif event == '-SUT-':
-            sut = logic.Sut(keypad.keypad()).sut
+            sut = round(float(logic.Sut(keypad.keypad()).sut), 2)
+            t_sut = round(float(sut * k_sut), 2)
             window['-SUT-'].update(
-                f'Оплата чел. в сутки\n{round(float(sut),2)} ₽/ч.д.')
-            window['-T_SUT-'].update(f'Всего: {round(float(sut*k_sut),2)} ₽')
+                f'Оплата чел. в сутки\n{sut} ₽/ч.д.')
+            window['-T_SUT-'].update(f'Всего: {t_sut} ₽')
     window.close()
 
 
