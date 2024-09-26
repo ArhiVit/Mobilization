@@ -1,6 +1,20 @@
 #!/usr/bin/env python
 import PySimpleGUI as sg
-import logic
+
+error_s = '--> Неверный ввод!'
+
+def check(s):
+    try:
+        int(s)
+        s = s.lstrip('0')
+        if not s: s = 0
+    except:
+        try:
+            float(s)
+            #s = s.lstrip('0')
+        except:
+            s = error_s
+    return s
 
 def keypad():
     
@@ -50,11 +64,11 @@ def keypad():
         elif event in '1234567890.':
             keys_entered = values['input']
             keys_entered += event
-            keys_entered=logic.check(keys_entered)
+            keys_entered = check(keys_entered)
             window['input'].update(keys_entered)
         elif event == '\U000023CE':
-            if keys_entered in [logic.error_s, '.', '']:
-                keys_entered = logic.error_s
+            if keys_entered in [error_s, '.', '']:
+                keys_entered = error_s
                 window['input'].update(keys_entered)
             else:
                 out = float(keys_entered)

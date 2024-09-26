@@ -3,78 +3,76 @@ import PySimpleGUI as sg
 import keypad
 import logic
 
-exec(open('config.txt').read())
-default_sut = 123
 def main():
 
     sg.theme('Dark')
 
-    layout_V_E_S = sg.Button('Объем работ\n0.0 м2(шт, м.п.)', expand_x=True, s=(0, 2), key='-V-'), sg.Button('Выработка\n0.0 м2(шт, м.п.)/ч.д.', expand_x=True, s=(0, 2), key='-E-'), sg.Button('Персонал рабочих\n0 чел.', expand_x=True, s=(0, 2), key='-S-')
+    layout_V_E_S = sg.Button('Объем работ, м2(шт, м.п.)\n', expand_x=True, s=(0, 2), key='-V-'), sg.Button('Выработка, м2(шт, м.п.)/ч.д.\n', expand_x=True, s=(0, 2), key='-E-'), sg.Button('Персонал рабочих, чел.\n', expand_x=True, s=(0, 2), key='-S-')
     layout_sut = sg.Frame(f'Суточные ({k_sut})',
-                          [[sg.Button(f'Оплата чел. в сутки\n{default_sut} 0.0 ₽/ч.д.', expand_x=True, s=(0, 2), key='-SUT-'),],
-                           [sg.Text('Всего: 0.0 ₽', expand_x=True,
+                          [[sg.Button(f'Оплата за чел. в сутки, р/ч.д.\n', expand_x=True, s=(0, 2), key='-SUT-'),],
+                           [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_SUT-')],
                            ],
                           title_color='pink',
                           expand_x=True,
                           )
     layout_rent = sg.Frame(f'Аренда жилья ({k_rent})',
-                           [[sg.Button('Оплата за чел. в сутки\n0.0 р/ч.д.', expand_x=True, s=(0, 2)),],
-                            [sg.Text('Всего: 0.0 ₽', expand_x=True,
+                           [[sg.Button('Оплата за чел. в сутки, р/ч.д.\n', expand_x=True, s=(0, 2), key='-RENT-'),],
+                            [sg.Text('Всего: ', expand_x=True,
                                      text_color='red', key='-T_RENT-')],
                             ],
                            title_color='pink',
                            expand_x=True,
                            )
     layout_staffTravel = sg.Frame(f'Проезд персонала - 1 поездка в 2 месяца ({k_staffTravel})',
-                                   [[sg.Button('Оплата чел. в 1 конец\n0.0 р', expand_x=True, s=(0, 2)), sg.Button('Кол-во поездок\n0.0 шт', expand_x=True, s=(0, 2)),],
-                                    [sg.Text('Всего: 0.0 ₽', expand_x=True,
+                                   [[sg.Button('Оплата чел. в 1 конец, р\n', expand_x=True, s=(0, 2), key='-STAFFTRAVEL-'), sg.Button('Кол-во поездок, шт\n', expand_x=True, s=(0, 2), key='-NUMSTAFFTRAVEL-'),],
+                                    [sg.Text('Всего: ', expand_x=True,
                                              text_color='red', key='-T_STAFFTRAVEL-')],
                                     ],
                                    title_color='pink',
                                    expand_x=True,
                                    )
-    layout_delivery = sg.Frame('Доставка/возврат оборудования и материалов\nдля обеспечения работ',
-                                   [[sg.Button('Расстояние до объекта\n0.0 км', expand_x=True, s=(0, 2)), sg.Button('Тариф доставки в 1 конец\n0.0 р/км', expand_x=True, s=(0, 2)), sg.Button('Кол-во рейсов\n0.0 шт', expand_x=True, s=(0, 2))],
-                                    [sg.Text('Всего: 0.0 ₽', expand_x=True,
+    layout_delivery = sg.Frame(f'Доставка/возврат оборудования и материалов\nдля обеспечения работ ({k_delivery})',
+                                   [[sg.Button('Расстояние до объекта, км\n', expand_x=True, s=(0, 2), key='-DISTANCE-'), sg.Button('Тариф доставки в 1 конец, р/км\n', expand_x=True, s=(0, 2), key='-DELIVERY-'), sg.Button('Кол-во рейсов, шт\n', expand_x=True, s=(0, 2), key='-NUMDELIVERY-')],
+                                    [sg.Text('Всего: ', expand_x=True,
                                              text_color='red', key='-T_DELIVERY-')],
                                     ],
                                    title_color='pink',
                                    expand_x=True,
                                    )
-    layout_engineer = sg.Frame('ИТР на объекте\n(з/п, суточные, жилье, проезд)',
-                          [[sg.Button('Зарплата на руки\n0.0 р/мес.', expand_x=True, s=(0, 2), key='-ENGINEER-'),],
-                           [sg.Text('Всего: 0.0 ₽', expand_x=True,
+    layout_engineer = sg.Frame(f'ИТР на объекте\n(з/п, суточные, жилье, проезд) ({k_engineer})',
+                          [[sg.Button('Зарплата на руки, р/мес.\n', expand_x=True, s=(0, 2), key='-ENGINEER-'),],
+                           [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_ENGINEER-')],
                            ],
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_trailer = sg.Frame('Бытовка, биотуалет и т.д\nв т.ч. аренда на весь срок',
-                          [[sg.Button('Общие затраты\n0.0 р', expand_x=True, s=(0, 2), key='-TRAILER-'),],
-                           [sg.Text('Всего: 0.0 ₽', expand_x=True,
+    layout_trailer = sg.Frame(f'Бытовка, биотуалет и т.д\nв т.ч. аренда на весь срок ({k_trailer})',
+                          [[sg.Button('Общие затраты, р\n', expand_x=True, s=(0, 2), key='-TRAILER-'),],
+                           [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_TRAILER-')],
                            ],
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_placeTravel = sg.Frame('Проезд персонала по месту работ',
-                          [[sg.Button('Оплата за чел. в сутки\n0.0 р/ч.д.', expand_x=True, s=(0, 2), key='-PLACETRAVEL-'),],
-                           [sg.Text('Всего: 0.0 ₽', expand_x=True,
+    layout_placeTravel = sg.Frame(f'Проезд персонала по месту работ ({k_placeTravel})',
+                          [[sg.Button('Оплата за чел. в сутки, р/ч.д.\n', expand_x=True, s=(0, 2), key='-PLACETRAVEL-'),],
+                           [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_PLACETRAVEL-')],
                            ],
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_otherExpences = sg.Frame('Прочие расходы',
-                          [[sg.Button('Общие затраты\n0.0 р', expand_x=True, s=(0, 2), key='-OTHEREXPENCES-'),],
-                           [sg.Text('Всего: 0.0 ₽', expand_x=True,
+    layout_otherExpences = sg.Frame(f'Прочие расходы ({k_otherExpences})',
+                          [[sg.Button('Общие затраты, р\n', expand_x=True, s=(0, 2), key='-OTHEREXPENCES-'),],
+                           [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_OTHEREXPENCES-')],
                            ],
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_mob = sg.Text('ИТОГО\nмобилизация: ', expand_x=True, text_color='red', key='-MOB-')
+    layout_mob = sg.Text(f'ИТОГО\nмобилизация: ', expand_x=True, text_color='red', key='-MOB-')
     layout = [[layout_V_E_S],
               [layout_sut, layout_rent,],
               [layout_staffTravel],
@@ -93,19 +91,40 @@ def main():
     # window.Maximize()
 
     while True:
-        event, values = window() # window.read()
+        volume = default_volume
+        efficiency = default_efficiency
+        staff = default_staff
+        sut = default_sut
+        rent = default_rent
+        staffTravel = default_staffTravel
+        numberTravel = default_numberTravel
+        delivery = default_delivery
+        distance = default_distance
+        numberDelivery = default_numberDelivery
+        engineer = default_engineer
+        trailer = default_trailer
+        placeTravel = default_placeTravel
+        otherExpences = default_otherExpences
+
+        event, values = window()
         if event in (sg.WIN_CLOSED, '\U00002716'):
             break
         elif event == '-SUT-':
-            sut = round(float(logic.Sut(keypad.keypad()).sut), 2)
-            t_sut = round(float(sut * k_sut), 2)
-            window['-SUT-'].update(
-                f'Оплата чел. в сутки\n{sut} ₽/ч.д.')
-            window['-T_SUT-'].update(f'Всего: {t_sut} ₽')
+            sut = round(float(keypad.keypad()), 2)
+    
+        total_sut = round(float(sut * k_sut), 2)
+        m = total_sut * 10
+
+        window['-SUT-'].update(f'Оплата чел. в сутки, р/ч.д.\n{sut}')
+        window['-T_SUT-'].update(f'Всего: {total_sut} ₽')
+        window['-MOB-'].update(f'ИТОГО\nмобилизация: {m}')
     window.close()
 
 
 if __name__ == '__main__':
+
+    exec(open('config.txt').read())
+
     main()
 
 
