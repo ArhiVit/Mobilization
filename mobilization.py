@@ -16,8 +16,8 @@ def main():
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_rent = sg.Frame(f'Аренда жилья ({k_rent})',
-                           [[sg.Button('Оплата за чел. в сутки, р/ч.д.\n', expand_x=True, s=(0, 2), key='-RENT-'),],
+    layout_rent = sg.Frame(f'Аренда жилья ({mob.k_rent})',
+                           [[sg.Button(f'Оплата за чел. в сутки, р/ч.д.\n{mob.rent}', expand_x=True, s=(0, 2), key='-RENT-'),],
                             [sg.Text('Всего: ', expand_x=True,
                                      text_color='red', key='-T_RENT-')],
                             ],
@@ -94,20 +94,21 @@ def main():
         event, values = window()
         if event in (sg.WIN_CLOSED, '\U00002716'):
             break
+        elif event == '-V-':
+            mob.volume = round(float(keypad.keypad()), 2)
         elif event == '-SUT-':
             mob.sut = round(float(keypad.keypad()), 2)
     
         total_sut = round(float(mob.sut * mob.k_sut), 2)
-        m = total_sut * 10
+        m = round(float(total_sut * 10), 2)
 
         win_dict = {
+            '-V-': f'Объем работ, м2(шт, м.п.)\n{mob.volume}',
             '-SUT-': f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}',
-            '-T_SUT-': f'Всего: {total_sut} ₽',
+            '-T_SUT-': f'Всего: {total_sut} р',
+            '-MOB-': f'ИТОГО\nмобилизация: {m}',
         }
         window.fill(win_dict)
-        #window['-SUT-'].update(f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}')
-        window['-T_SUT-'].update(f'Всего: {total_sut} ₽')
-        window['-MOB-'].update(f'ИТОГО\nмобилизация: {m}')
     window.close()
 
 
