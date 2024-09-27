@@ -7,9 +7,9 @@ def main():
 
     sg.theme('Dark')
 
-    layout_V_E_S = sg.Button('Объем работ, м2(шт, м.п.)\n', expand_x=True, s=(0, 2), key='-V-'), sg.Button('Выработка, м2(шт, м.п.)/ч.д.\n', expand_x=True, s=(0, 2), key='-E-'), sg.Button('Персонал рабочих, чел.\n', expand_x=True, s=(0, 2), key='-S-')
-    layout_sut = sg.Frame(f'Суточные ({k_sut})',
-                          [[sg.Button(f'Оплата за чел. в сутки, р/ч.д.\n', expand_x=True, s=(0, 2), key='-SUT-'),],
+    layout_V_E_S = sg.Button(f'Объем работ, м2(шт, м.п.)\n{mob.volume}', expand_x=True, s=(0, 2), key='-V-'), sg.Button('Выработка, м2(шт, м.п.)/ч.д.\n', expand_x=True, s=(0, 2), key='-E-'), sg.Button('Персонал рабочих, чел.\n', expand_x=True, s=(0, 2), key='-S-')
+    layout_sut = sg.Frame(f'Суточные ({mob.k_sut})',
+                          [[sg.Button(f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}', expand_x=True, s=(0, 2), key='-SUT-'),],
                            [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_SUT-')],
                            ],
@@ -91,31 +91,21 @@ def main():
     # window.Maximize()
 
     while True:
-        volume = default_volume
-        efficiency = default_efficiency
-        staff = default_staff
-        sut = default_sut
-        rent = default_rent
-        staffTravel = default_staffTravel
-        numberTravel = default_numberTravel
-        delivery = default_delivery
-        distance = default_distance
-        numberDelivery = default_numberDelivery
-        engineer = default_engineer
-        trailer = default_trailer
-        placeTravel = default_placeTravel
-        otherExpences = default_otherExpences
-
         event, values = window()
         if event in (sg.WIN_CLOSED, '\U00002716'):
             break
         elif event == '-SUT-':
-            sut = round(float(keypad.keypad()), 2)
+            mob.sut = round(float(keypad.keypad()), 2)
     
-        total_sut = round(float(sut * k_sut), 2)
+        total_sut = round(float(mob.sut * mob.k_sut), 2)
         m = total_sut * 10
 
-        window['-SUT-'].update(f'Оплата чел. в сутки, р/ч.д.\n{sut}')
+        win_dict = {
+            '-SUT-': f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}',
+            '-T_SUT-': f'Всего: {total_sut} ₽',
+        }
+        window.fill(win_dict)
+        #window['-SUT-'].update(f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}')
         window['-T_SUT-'].update(f'Всего: {total_sut} ₽')
         window['-MOB-'].update(f'ИТОГО\nмобилизация: {m}')
     window.close()
@@ -124,6 +114,9 @@ def main():
 if __name__ == '__main__':
 
     exec(open('config.txt').read())
+    param = [volume, efficiency, staff, sut, rent, staffTravel, numberTravel, delivery, distance, numberDelivery, engineer, trailer, placeTravel, otherExpences]
+    k_param = [k_sut, k_rent, k_staffTravel, k_delivery, k_engineer, k_trailer, k_placeTravel, k_otherExpences]
+    mob = logic.Mobilization(*param, *k_param)
 
     main()
 
