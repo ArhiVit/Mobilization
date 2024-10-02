@@ -7,7 +7,8 @@ def main():
 
     sg.theme('Dark')
 
-    layout_V_E_S = sg.Button(f'Объем работ, м2(шт, м.п.)\n{mob.volume}', expand_x=True, s=(0, 2), key='-V-'), sg.Button('Выработка, м2(шт, м.п.)/ч.д.\n', expand_x=True, s=(0, 2), key='-E-'), sg.Button('Персонал рабочих, чел.\n', expand_x=True, s=(0, 2), key='-S-')
+    layout_V_E_S = sg.Button(f'Объем работ, м2(шт, м.п.)\n{mob.volume}', expand_x=True, s=(0, 2), key='-V-'), sg.Button(f'Выработка, м2(шт, м.п.)/ч.д.\n {mob.efficiency}', expand_x=True, s=(0, 2), key='-E-'), sg.Button(f'Персонал рабочих, чел.\n{mob.staff}', expand_x=True, s=(0, 2), key='-S-')
+    layout_period = sg.Text(f'Продолжительность выполнения работ: ', expand_x=True, text_color='red', key='-PERIOD-')
     layout_sut = sg.Frame(f'Суточные ({mob.k_sut})',
                           [[sg.Button(f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}', expand_x=True, s=(0, 2), key='-SUT-'),],
                            [sg.Text('Всего: ', expand_x=True,
@@ -74,6 +75,7 @@ def main():
                           )
     layout_mob = sg.Text(f'ИТОГО\nмобилизация: ', expand_x=True, text_color='red', key='-MOB-')
     layout = [[layout_V_E_S],
+              [layout_period],
               [layout_sut, layout_rent,],
               [layout_staffTravel],
               [layout_delivery],
@@ -96,17 +98,48 @@ def main():
             break
         elif event == '-V-':
             mob.volume = round(float(keypad.keypad()), 2)
+        elif event == '-E-':
+            mob.efficiency = round(float(keypad.keypad()), 2)
+        elif event == '-S-':
+            mob.staff = round(float(keypad.keypad()), 2)
         elif event == '-SUT-':
             mob.sut = round(float(keypad.keypad()), 2)
-    
-        total_sut = round(float(mob.sut * mob.k_sut), 2)
-        m = round(float(total_sut * 10), 2)
+        elif event == '-RENT-':
+            mob.rent = round(float(keypad.keypad()), 2)   
+        elif event == '-STAFFTRAVEL-':
+            mob.staffTravel = round(float(keypad.keypad()), 2)
+        elif event == '-NUMSTAFFTRAVEL-':
+            mob.number_staffTravel = round(float(keypad.keypad()), 2)
+        elif event == '-DISTANCE-':
+            mob.distance = round(float(keypad.keypad()), 2)
+        elif event == '-DELIVERY-':
+            mob.delivery = round(float(keypad.keypad()), 2)
+        elif event == '-NUMDELIVERY-':
+            mob.number_delivery = round(float(keypad.keypad()), 2)
+        elif event == '-ENGINEER-':
+            mob.engineer = round(float(keypad.keypad()), 2)
+        elif event == '-TRAILER-':
+            mob.trailer = round(float(keypad.keypad()), 2)
+        elif event == '-PLACETRAVEL-':
+            mob.placeTravel = round(float(keypad.keypad()), 2)
+        elif event == '-OTHEREXPENCES-':
+            mob.otherExpences = round(float(keypad.keypad()), 2)
+
+
+
+        #period = round(float(mob.volume / mob.efficiency / mob.staff), 2)
+        #total_sut = round(float(mob.staff * mob.sut * mob.k_sut * period / 24 * 31), 2)
+
+        total = round(float(mob.get_total_sut() * 10), 2)
 
         win_dict = {
             '-V-': f'Объем работ, м2(шт, м.п.)\n{mob.volume}',
+            '-E-': f'Выработка, м2(шт, м.п.)/ч.д.\n{mob.efficiency}',
+            '-S-': f'Персонал рабочих, чел.\n{mob.staff}',
+            '-PERIOD-': f'Продолжительность выполнения работ: {mob.get_period()} раб.д. ({round(float(mob.get_period()/24), 2)} кал.мес.)',
             '-SUT-': f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}',
-            '-T_SUT-': f'Всего: {total_sut} р',
-            '-MOB-': f'ИТОГО\nмобилизация: {m}',
+            '-T_SUT-': f'Всего: {mob.get_total_sut()} р',
+            '-MOB-': f'ИТОГО\nмобилизация: {total}',
         }
         window.fill(win_dict)
     window.close()
@@ -115,7 +148,7 @@ def main():
 if __name__ == '__main__':
 
     exec(open('config.txt').read())
-    param = [volume, efficiency, staff, sut, rent, staffTravel, numberTravel, delivery, distance, numberDelivery, engineer, trailer, placeTravel, otherExpences]
+    param = [volume, efficiency, staff, sut, rent, staffTravel, number_staffTravel, delivery, distance, number_delivery, engineer, trailer, placeTravel, otherExpences]
     k_param = [k_sut, k_rent, k_staffTravel, k_delivery, k_engineer, k_trailer, k_placeTravel, k_otherExpences]
     mob = logic.Mobilization(*param, *k_param)
 
