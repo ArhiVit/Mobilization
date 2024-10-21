@@ -30,6 +30,26 @@ class Mobilization:
     def get_total_sut(self):
         return round(float(self.staff * self.sut * self.k_sut * self.get_period() / 24 * 31), 2)
         
+    def get_total_rent(self):
+        return round(float(self.staff * self.rent * self.k_rent * self.get_period() / 24 * 31), 2)
+    
+    def get_total_staffTravel(self):
+        return round(float(self.staff * self.staffTravel * self.number_staffTravel * 2 * self.k_staffTravel), 2)
+    
+    def get_total_delivery(self):
+        return round(float(self.distance * self.delivery * self.number_delivery * 2 * self.k_delivery), 2)
+    
+    def get_total_engineer(self):
+        return round(float(((self.engineer + (self.rent + self.sut) * 31) * self.get_period() / 24 + self.staffTravel * 2) * self.k_engineer), 2)
+    
+    def get_total_trailer(self):
+        return round(float(self.trailer * self.k_trailer), 2)
+    
+    def get_total_placeTravel(self):
+        return round(float(self.placeTravel * self.staff * self.get_period() * self.k_placeTravel), 2)
+    
+    def get_total_otherExpences(self):
+        return round(float(self.otherExpences * self.k_otherExpences), 2)
         
 if __name__ == "__main__":
     
