@@ -8,7 +8,8 @@ def main():
     sg.theme('Dark')
 
     layout_V_E_S = sg.Button(f'Объем работ, м2(шт, м.п.)\n{mob.volume}', expand_x=True, s=(0, 2), key='-V-'), sg.Button(f'Выработка, м2(шт, м.п.)/ч.д.\n {mob.efficiency}', expand_x=True, s=(0, 2), key='-E-'), sg.Button(f'Персонал рабочих, чел.\n{mob.staff}', expand_x=True, s=(0, 2), key='-S-')
-    layout_period = sg.Text(f'Продолжительность выполнения работ: ', expand_x=True, text_color='red', key='-PERIOD-')
+    layout_trudoemkost = sg.Text(f'Общая трудоемкость работ: ', expand_x=True, text_color='gold', key='-T-')
+    layout_period = sg.Text(f'Срок выполнения работ: ', expand_x=True, text_color='gold', key='-PERIOD-')
     layout_sut = sg.Frame(f'Суточные ({mob.k_sut})',
                           [[sg.Button(f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}', expand_x=True, s=(0, 2), key='-SUT-'),],
                            [sg.Text('Всего: ', expand_x=True,
@@ -50,7 +51,7 @@ def main():
                           expand_x=True,
                           )
     layout_trailer = sg.Frame(f'Бытовка, биотуалет и т.д\nв т.ч. аренда на весь срок ({mob.k_trailer})',
-                          [[sg.Button(f'Общие затраты, р\n{mob.trailer}', expand_x=True, s=(0, 2), key='-TRAILER-'),],
+                          [[sg.Button(f'Затраты, р\n{mob.trailer}', expand_x=True, s=(0, 2), key='-TRAILER-'),],
                            [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_TRAILER-')],
                            ],
@@ -66,15 +67,16 @@ def main():
                           expand_x=True,
                           )
     layout_otherExpences = sg.Frame(f'Прочие расходы ({mob.k_otherExpences})',
-                          [[sg.Button(f'Общие затраты, р\n{mob.otherExpences}', expand_x=True, s=(0, 2), key='-OTHEREXPENCES-'),],
+                          [[sg.Button(f'Затраты, р\n{mob.otherExpences}', expand_x=True, s=(0, 2), key='-OTHEREXPENCES-'),],
                            [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_OTHEREXPENCES-')],
                            ],
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_mob = sg.Text(f'ИТОГО\nмобилизация: ', expand_x=True, text_color='red', key='-MOB-')
+    layout_mob = sg.Text(f'ИТОГО\nМОБИЛИЗАЦИЯ: ', expand_x=True, text_color='gold', key='-MOB-')
     layout = [[layout_V_E_S],
+              [layout_trudoemkost],
               [layout_period],
               [layout_sut, layout_rent,],
               [layout_staffTravel],
@@ -125,40 +127,39 @@ def main():
         elif event == '-OTHEREXPENCES-':
             mob.otherExpences = round(float(keypad.keypad()), 2)
 
-
-
-        #period = round(float(mob.volume / mob.efficiency / mob.staff), 2)
-        #total_sut = round(float(mob.staff * mob.sut * mob.k_sut * period / 24 * 31), 2)
-
-        total = round(float(mob.get_total_sut() * 10), 2)
-
-        win_dict = {
-            '-V-': f'Объем работ, м2(шт, м.п.)\n{mob.volume}',
-            '-E-': f'Выработка, м2(шт, м.п.)/ч.д.\n{mob.efficiency}',
-            '-S-': f'Персонал рабочих, чел.\n{mob.staff}',
-            '-PERIOD-': f'Продолжительность выполнения работ: {mob.get_period()} раб.д. ({round(float(mob.get_period()/24), 2)} кал.мес.)',
-            '-SUT-': f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}',
-            '-T_SUT-': f'Всего: {mob.get_total_sut()} р',
-            '-RENT-': f'Оплата за чел. в сутки, р/ч.д.\n{mob.rent}',
-            '-T_RENT-': f'Всего: {mob.get_total_rent()} р',
-            '-STAFFTRAVEL-': f'Оплата чел. в 1 конец, р\n{mob.staffTravel}',
-            '-NUMSTAFFTRAVEL-': f'Кол-во поездок, шт\n{mob.number_staffTravel}',
-            '-T_STAFFTRAVEL-': f'Всего: {mob.get_total_staffTravel()} р',
-            '-DISTANCE-': f'Расстояние до объекта, км\n{mob.distance}',
-            '-DELIVERY-': f'Тариф доставки в 1 конец, р/км\n{mob.delivery}',
-            '-NUMDELIVERY-': f'Кол-во рейсов, шт\n{mob.number_delivery}',
-            '-T_DELIVERY-': f'Всего: {mob.get_total_delivery()} р',
-            '-ENGINEER-': f'Зарплата на руки, р/мес.\n{mob.engineer}',
-            '-T_ENGINEER-': f'Всего: {mob.get_total_engineer()} р',
-            '-TRAILER-': f'Общие затраты, р\n{mob.trailer}',
-            '-T_TRAILER-': f'Всего: {mob.get_total_trailer()} р',
-            '-PLACETRAVEL-': f'Оплата чел. в сутки, р/ч.д.\n{mob.placeTravel}',
-            '-T_PLACETRAVEL-': f'Всего: {mob.get_total_placeTravel()} р',
-            '-OTHEREXPENCES-': f'Общие затраты, р\n{mob.otherExpences}',
-            '-T_OTHEREXPENCES-': f'Всего: {mob.get_total_otherExpences()} р',
-            '-MOB-': f'ИТОГО\nмобилизация: {total}',
-        }
-        window.fill(win_dict)
+        
+        if not mob.volume or not mob.efficiency or not mob.staff:
+            sg.popup_error("Критическая ошибка!\nОбъем работ, Выработка или Персонал рабочих не может быть 0!")
+            break
+        else:
+            win_dict = {
+                '-V-': f'Объем работ, м2(шт, м.п.)\n{mob.volume}',
+                '-E-': f'Выработка, м2(шт, м.п.)/ч.д.\n{mob.efficiency}',
+                '-S-': f'Персонал рабочих, чел.\n{mob.staff}',
+                '-T-': f'Общая трудоемкость работ: {mob.get_trudoemkost()} ч.д.',
+                '-PERIOD-': f'Срок выполнения работ бригадой: {mob.get_period()} раб.д. ({round(float(mob.get_period()/24), 2)} кал.мес.)',
+                '-SUT-': f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}',
+                '-T_SUT-': f'Всего: {mob.get_total_sut()} р',
+                '-RENT-': f'Оплата за чел. в сутки, р/ч.д.\n{mob.rent}',
+                '-T_RENT-': f'Всего: {mob.get_total_rent()} р',
+                '-STAFFTRAVEL-': f'Оплата чел. в 1 конец, р\n{mob.staffTravel}',
+                '-NUMSTAFFTRAVEL-': f'Кол-во поездок, шт\n{mob.number_staffTravel}',
+                '-T_STAFFTRAVEL-': f'Всего: {mob.get_total_staffTravel()} р',
+                '-DISTANCE-': f'Расстояние до объекта, км\n{mob.distance}',
+                '-DELIVERY-': f'Тариф доставки в 1 конец, р/км\n{mob.delivery}',
+                '-NUMDELIVERY-': f'Кол-во рейсов, шт\n{mob.number_delivery}',
+                '-T_DELIVERY-': f'Всего: {mob.get_total_delivery()} р',
+                '-ENGINEER-': f'Зарплата на руки, р/мес.\n{mob.engineer}',
+                '-T_ENGINEER-': f'Всего: {mob.get_total_engineer()} р',
+                '-TRAILER-': f'Затраты, р\n{mob.trailer}',
+                '-T_TRAILER-': f'Всего: {mob.get_total_trailer()} р',
+                '-PLACETRAVEL-': f'Оплата чел. в сутки, р/ч.д.\n{mob.placeTravel}',
+                '-T_PLACETRAVEL-': f'Всего: {mob.get_total_placeTravel()} р',
+                '-OTHEREXPENCES-': f'Затраты, р\n{mob.otherExpences}',
+                '-T_OTHEREXPENCES-': f'Всего: {mob.get_total_otherExpences()} р',
+                '-MOB-': f'ИТОГО\nМОБИЛИЗАЦИЯ: {mob.get_total()} р ({round(float(mob.get_total() / mob.volume), 2)} р/м2(шт, м.п.) или {round(float(mob.get_total() / mob.get_period() / mob.staff), 2)} р/ч.д.)',
+            }
+            window.fill(win_dict)
     window.close()
 
 
