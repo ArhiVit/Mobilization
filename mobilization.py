@@ -26,7 +26,7 @@ def main():
                            title_color='pink',
                            expand_x=True,
                            )
-    layout_staffTravel = sg.Frame(f'Проезд персонала - 1 поездка в 2 месяца ({mob.k_staffTravel})',
+    layout_staffTravel = sg.Frame(f'Перебазировка персонала на объект\n- 1 поездка в 2 месяца ({mob.k_staffTravel})',
                                    [[sg.Button(f'Оплата чел. в 1 конец, р\n{mob.staffTravel}', expand_x=True, s=(0, 2), key='-STAFFTRAVEL-'), sg.Button(f'Кол-во поездок, шт\n{mob.number_staffTravel}', expand_x=True, s=(0, 2), key='-NUMSTAFFTRAVEL-'),],
                                     [sg.Text('Всего: ', expand_x=True,
                                              text_color='red', key='-T_STAFFTRAVEL-')],
