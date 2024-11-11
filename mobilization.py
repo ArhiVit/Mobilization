@@ -7,7 +7,32 @@ def main():
 
     sg.theme('Dark')
 
-    layout_V_E_S = sg.Button(f'Объем работ, м2(шт, м.п.)\n{mob.volume}', expand_x=True, s=(0, 2), key='-V-'), sg.Button(f'Выработка, м2(шт, м.п.)/ч.д.\n {mob.efficiency}', expand_x=True, s=(0, 2), key='-E-'), sg.Button(f'Персонал рабочих, чел.\n{mob.staff}', expand_x=True, s=(0, 2), key='-S-')
+    layout_KT = sg.Frame('Коэффициенты: ',
+                          [[sg.Button(f'Суточные,\n{mob.k_sut}', expand_x=True, s=(0, 2), key='-KSUT-'), 
+                            sg.Button(f'Аренда,\n{mob.k_rent}', expand_x=True, s=(0, 2), key='-KRENT-'),
+                            sg.Button(f'Перебазировка,\n{mob.k_staffTravel}', expand_x=True, s=(0, 2), key='-KSTAFFTRAVEL-'),
+                            sg.Button(f'Доставка МАТ,\n{mob.k_delivery}', expand_x=True, s=(0, 2), key='-KDELIVERY-'),
+                           ],
+                           [sg.Button(f'ИТР,\n{mob.k_engineer}', expand_x=True, s=(0, 2), key='-KENGINEER-'), 
+                            sg.Button(f'Бытовка,\n{mob.k_trailer}', expand_x=True, s=(0, 2), key='-KTRAILER-'),
+                            sg.Button(f'Проезд,\n{mob.k_placeTravel}', expand_x=True, s=(0, 2), key='-KPLACETRAVEL-'),
+                            sg.Button(f'Прочее,\n{mob.k_otherExpences}', expand_x=True, s=(0, 2), key='-KOTHEREXPENCES-'),
+                           ],],
+                          border_width=3,
+                          title_location='s',
+                          title_color='blue',
+                          background_color='gray',
+                          expand_x=True,
+                          )
+    layout_V_E_S = sg.Frame('Общие данные: ',
+                          [[sg.Button(f'Объем работ, м2(шт, м.п.)\n{mob.volume}', expand_x=True, s=(0, 2), key='-V-'),
+                            sg.Button(f'Выработка, м2(шт, м.п.)/ч.д.\n {mob.efficiency}', expand_x=True, s=(0, 2), key='-E-'),
+                            sg.Button(f'Персонал рабочих, чел.\n{mob.staff}', expand_x=True, s=(0, 2), key='-S-'),
+                          ]],
+                          title_location='n',
+                          title_color='gold',
+                          expand_x=True,
+                          )
     layout_trudoemkost = sg.Text(f'Общая трудоемкость работ: ', expand_x=True, text_color='gold', key='-T-')
     layout_period = sg.Text(f'Срок выполнения работ: ', expand_x=True, text_color='gold', key='-PERIOD-')
     layout_sut = sg.Frame(f'Суточные ({mob.k_sut})',
@@ -74,8 +99,9 @@ def main():
                           title_color='pink',
                           expand_x=True,
                           )
-    layout_mob = sg.Text(f'ИТОГО\nМОБИЛИЗАЦИЯ: ', expand_x=True, text_color='gold', key='-MOB-')
-    layout = [[layout_V_E_S],
+    layout_mob = sg.Text(f'ИТОГО\nМОБИЛИЗАЦИЯ: ', expand_x=True, text_color='red', background_color='yellow', key='-MOB-')
+    layout = [[layout_KT],
+              [layout_V_E_S],
               [layout_trudoemkost],
               [layout_period],
               [layout_sut, layout_rent,],
@@ -98,6 +124,22 @@ def main():
         event, values = window()
         if event in (sg.WIN_CLOSED, '\U00002716'):
             break
+        elif event == '-KSUT-':
+            mob.k_sut = round(float(keypad.keypad()), 2)
+        elif event == '-KRENT-':
+            mob.k_rent = round(float(keypad.keypad()), 2)
+        elif event == '-KSTAFFTRAVEL-':
+            mob.k_staffTravel = round(float(keypad.keypad()), 2)
+        elif event == '-KDELIVERY-':
+            mob.k_delivery = round(float(keypad.keypad()), 2)
+        elif event == '-KENGINEER-':
+            mob.k_engineer = round(float(keypad.keypad()), 2)
+        elif event == '-KTRAILER-':
+            mob.k_trailer = round(float(keypad.keypad()), 2)
+        elif event == '-KPLACETRAVEL-':
+            mob.k_placeTravel = round(float(keypad.keypad()), 2)
+        elif event == '-KOTHEREXPENCES-':
+            mob.k_otherExpences = round(float(keypad.keypad()), 2)
         elif event == '-V-':
             mob.volume = round(float(keypad.keypad()), 2)
         elif event == '-E-':
@@ -133,6 +175,7 @@ def main():
             break
         else:
             win_dict = {
+                '-KSUT-': f'Суточные, р/ч.д.\n{mob.k_sut}',
                 '-V-': f'Объем работ, м2(шт, м.п.)\n{mob.volume}',
                 '-E-': f'Выработка, м2(шт, м.п.)/ч.д.\n{mob.efficiency}',
                 '-S-': f'Персонал рабочих, чел.\n{mob.staff}',
