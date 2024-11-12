@@ -7,7 +7,7 @@ k_trailer = 1.4
 k_placeTravel = 1.4
 k_otherExpences = 1.4
 
-volume = 100
+volume = 0
 efficiency = 3
 staff = 3
 sut = 600

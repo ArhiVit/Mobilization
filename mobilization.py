@@ -171,8 +171,7 @@ def main():
 
         
         if not mob.volume or not mob.efficiency or not mob.staff:
-            sg.popup_error("Критическая ошибка!\nОбъем работ, Выработка или Персонал рабочих не может быть 0!")
-            break
+            sg.popup_error('АХТУНГ!!!', 'Критическая ошибка!', 'Объем работ, Выработка или Персонал рабочих не может быть 0!', 'Скорректируй ввод!', line_width=50, no_titlebar=True, background_color='grey')
         else:
             win_dict = {
                 '-KSUT-': f'Суточные, р/ч.д.\n{mob.k_sut}',
