@@ -141,11 +141,11 @@ def main():
         elif event == '-KOTHEREXPENCES-':
             mob.k_otherExpences = round(float(keypad.keypad()), 2)
         elif event == '-V-':
-            mob.volume = round(float(keypad.keypad()), 2)
+            mob.volume = round(float(keypad.keypad(0.1, 100000)), 2)
         elif event == '-E-':
-            mob.efficiency = round(float(keypad.keypad()), 2)
+            mob.efficiency = round(float(keypad.keypad(0.1, 1000)), 2)
         elif event == '-S-':
-            mob.staff = round(float(keypad.keypad()), 2)
+            mob.staff = round(float(keypad.keypad(1, 1000)), 2)
         elif event == '-SUT-':
             mob.sut = round(float(keypad.keypad()), 2)
         elif event == '-RENT-':

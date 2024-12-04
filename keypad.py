@@ -1,27 +1,26 @@
 #!/usr/bin/env python
 import PySimpleGUI as sg
 
-error_s = '--> Неверный ввод!'
-
-def check(s):
+def check(value):
     try:
-        int(s)
-        s = s.lstrip('0')
-        if not s: s = 0
+        int(value)
+        value = value.lstrip('0')
+        if not value: value = 0
     except:
         try:
-            float(s)
+            float(value)
             #s = s.lstrip('0')
         except:
-            s = error_s
-    return s
+            value = '--> Неверный ввод!'
+    return value
 
-def keypad():
+
+def keypad(min_limit=0, max_limit=1000000000000):
     
     sg.theme('Dark')
 
     layout = [
-              #[sg.Text('Введите число с клавиатуры')],
+              [sg.Text(f'Введите число\nот {min_limit} до {max_limit}', justification='center', s=(25,2))],
               [sg.Input('',
               size=(25, 1),
               readonly=True,
@@ -32,9 +31,7 @@ def keypad():
               [sg.Button('4'), sg.Button('5'), sg.Button('6')],
               [sg.Button('7'), sg.Button('8'), sg.Button('9')],
               [sg.Button('.'), sg.Button('0'), sg.Button('\U0000232B')],
-              [sg.Button(button_text='\U000023CE',
-              expand_x=True,
-              )],
+              [sg.Button(button_text='\U000023CE', expand_x=True)],
               #[sg.Text('', expand_x=True, font=('Helvetica', 14, 'italic'),text_color='red', key='out')],
               ]
     
@@ -42,10 +39,9 @@ def keypad():
                        'Keypad',
                        layout,
                        disable_close=False,#True,
-                       default_button_element_size=(5, 2),
+                       default_button_element_size=(6, 2),
                        auto_size_buttons=False,
                        element_justification='center',
-                       #no_titlebar=True,
                        modal = True,
                        finalize=True,
                        )
@@ -67,8 +63,11 @@ def keypad():
             keys_entered = check(keys_entered)
             window['input'].update(keys_entered)
         elif event == '\U000023CE':
-            if keys_entered in [error_s, '.', '']:
-                keys_entered = error_s
+            if keys_entered in ['--> Неверный ввод!', '.', '', '--> Значение вне диапазона!']:
+                keys_entered = '--> Неверный ввод!'
+                window['input'].update(keys_entered)
+            elif float(keys_entered) > max_limit or float(keys_entered) < min_limit:
+                keys_entered = '--> Значение вне диапазона!'
                 window['input'].update(keys_entered)
             else:
                 out = float(keys_entered)
@@ -81,4 +80,11 @@ def keypad():
 
 if __name__ == '__main__':
     
-    keypad()
+    #min_limit = 0
+    #max_limit = 1000000000
+    
+    res = keypad(0, 10)
+    #res = keypad()
+    
+    print(res)
+    input()
