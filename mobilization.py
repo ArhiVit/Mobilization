@@ -174,7 +174,14 @@ def main():
             sg.popup_error('АХТУНГ!!!', 'Критическая ошибка!', 'Объем работ, Выработка или Персонал рабочих не может быть 0!', 'Скорректируй ввод!', line_width=50, no_titlebar=True, background_color='grey')
         else:
             win_dict = {
-                '-KSUT-': f'Суточные, р/ч.д.\n{mob.k_sut}',
+                '-KSUT-': f'Суточные,\n{mob.k_sut}',
+                '-KRENT-': f'Аренда,\n{mob.k_rent}',
+                '-KSTAFFTRAVEL-': f'Перебазировка,\n{mob.k_staffTravel}',
+                '-KDELIVERY-': f'Доставка МАТ,\n{mob.k_delivery}',
+                '-KENGINEER-': f'ИТР,\n{mob.k_engineer}',
+                '-KTRAILER-': f'Бытовка,\n{mob.k_trailer}',
+                '-KPLACETRAVEL-': f'Проезд,\n{mob.k_placeTravel}',
+                '-KOTHEREXPENCES-': f'Прочее,\n{mob.k_otherExpences}',
                 '-V-': f'Объем работ, м2(шт, м.п.)\n{mob.volume}',
                 '-E-': f'Выработка, м2(шт, м.п.)/ч.д.\n{mob.efficiency}',
                 '-S-': f'Персонал рабочих, чел.\n{mob.staff}',
@@ -203,7 +210,6 @@ def main():
             }
             window.fill(win_dict)
     window.close()
-
 
 if __name__ == '__main__':
 
