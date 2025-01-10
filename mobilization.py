@@ -37,7 +37,7 @@ def main():
     layout_trudoemkost = sg.Text(f'Общая трудоемкость работ: ', expand_x=True, text_color='gold', key='-T-')
     layout_period = sg.Text(f'Срок выполнения работ: ', expand_x=True, text_color='gold', key='-PERIOD-')
     layout_sut = sg.Frame(f'Суточные ({mob.k_sut})',
-                          [[sg.Button(f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}', expand_x=True, s=(0, 2), key='-SUT-'),],
+                          [[sg.Button(f'Оплата чел. в кал.сутки, р\n{mob.sut}', expand_x=True, s=(0, 2), key='-SUT-'),],
                            [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_SUT-')],
                            ],
@@ -45,7 +45,7 @@ def main():
                           expand_x=True,
                           )
     layout_rent = sg.Frame(f'Аренда жилья ({mob.k_rent})',
-                           [[sg.Button(f'Оплата за чел. в сутки, р/ч.д.\n{mob.rent}', expand_x=True, s=(0, 2), key='-RENT-'),],
+                           [[sg.Button(f'Оплата за чел. в кал.сутки, р\n{mob.rent}', expand_x=True, s=(0, 2), key='-RENT-'),],
                             [sg.Text('Всего: ', expand_x=True,
                                      text_color='red', key='-T_RENT-')],
                             ],
@@ -85,7 +85,7 @@ def main():
                           expand_x=True,
                           )
     layout_placeTravel = sg.Frame(f'Проезд персонала по месту работ ({mob.k_placeTravel})',
-                          [[sg.Button(f'Оплата за чел. в сутки, р/ч.д.\n{mob.placeTravel}', expand_x=True, s=(0, 2), key='-PLACETRAVEL-'),],
+                          [[sg.Button(f'Оплата за чел., р/ч.д.\n{mob.placeTravel}', expand_x=True, s=(0, 2), key='-PLACETRAVEL-'),],
                            [sg.Text('Всего: ', expand_x=True,
                                     text_color='red', key='-T_PLACETRAVEL-')],
                            ],
@@ -188,9 +188,9 @@ def main():
                 '-S-': f'Персонал рабочих, чел.\n{mob.staff}',
                 '-T-': f'Общая трудоемкость работ: {mob.get_trudoemkost()} ч.д.',
                 '-PERIOD-': f'Срок выполнения работ бригадой: {mob.get_period()} раб.д. ({round(float(mob.get_period()/24), 2)} кал.мес.)',
-                '-SUT-': f'Оплата чел. в сутки, р/ч.д.\n{mob.sut}',
+                '-SUT-': f'Оплата чел. в кал.сутки, р\n{mob.sut}',
                 '-T_SUT-': f'Всего: {mob.get_total_sut()} р',
-                '-RENT-': f'Оплата за чел. в сутки, р/ч.д.\n{mob.rent}',
+                '-RENT-': f'Оплата за чел. в кал.сутки, р\n{mob.rent}',
                 '-T_RENT-': f'Всего: {mob.get_total_rent()} р',
                 '-STAFFTRAVEL-': f'Оплата чел. в 1 конец, р\n{mob.staffTravel}',
                 '-NUMSTAFFTRAVEL-': f'Кол-во поездок, шт\n{mob.number_staffTravel}',
@@ -203,7 +203,7 @@ def main():
                 '-T_ENGINEER-': f'Всего: {mob.get_total_engineer()} р',
                 '-TRAILER-': f'Затраты, р\n{mob.trailer}',
                 '-T_TRAILER-': f'Всего: {mob.get_total_trailer()} р',
-                '-PLACETRAVEL-': f'Оплата чел. в сутки, р/ч.д.\n{mob.placeTravel}',
+                '-PLACETRAVEL-': f'Оплата за чел., р/ч.д.\n{mob.placeTravel}',
                 '-T_PLACETRAVEL-': f'Всего: {mob.get_total_placeTravel()} р',
                 '-OTHEREXPENCES-': f'Затраты, р\n{mob.otherExpences}',
                 '-T_OTHEREXPENCES-': f'Всего: {mob.get_total_otherExpences()} р',
